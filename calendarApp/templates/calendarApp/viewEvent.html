@@ -1,0 +1,15 @@
+{% extends 'calendarApp/base.html' %}
+
+{% block content %}
+<div >
+  <h2> View event for {{ event.start }} </h2>
+  <br>
+  <p><b>Event title:</b> {{ event.title }} </p>
+  <p><b>Start time:</b> {{ event.start }}  </p>
+  <p><b>End time:</b> {{ event.end }}  </p>
+  <p><b>Event description:</b> {{ event.description }}  </p>
+  <a href="/calendar">
+    <h3>&larr; Back to calendar</h3>
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'calendarApp/base.html' %}
+
+{% block content %}
+  <div style="padding-left: 30%">
+    <h2>New event</h2>
+    <form method="POST" class="post-form" action=>{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+  </div>
+{% endblock %}

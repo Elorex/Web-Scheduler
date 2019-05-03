@@ -1,0 +1,35 @@
+<!--
+    Landing page. Prompts user to log in if not already authenitcated,
+    else it prompts them to go the home page.
+-->
+
+{% extends 'calendarApp/baseMinimal.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% if not user.is_authenticated %}
+<h1 style="padding-bottom: 40px; padding-top:40px; font-size: 48px;">
+  <b style="color: rgb(215,215,215);">You are not logged in.</b>
+</h1>
+<h3>
+  <b style="color: rgb(215,215,215);">Please log in to continue.</b>
+</h3><br>
+<p><a href="/login/">Log in</a></p>
+<p style="padding-top: 25px;"> Not a member?
+  <br> <a href="/register">Register</a></p>
+
+{% endif %}
+
+{% if user.is_authenticated %}
+<h1 style="padding-bottom: 40px; padding-top:40px; font-size: 48px;">
+  <b style="color: rgb(215,215,215);">Welcome, {{ user.username }}</b>
+</h1>
+<h3>
+  <b style="color: rgb(215,215,215);">Continue below</b>
+</h3><br>
+<p><a href="/index.html">Continue</a></p>
+{% endif %}
+
+{% endblock %}

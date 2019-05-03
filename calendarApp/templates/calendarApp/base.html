@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+{% load static %}
+
+
+<html>
+
+<head>
+	<title>Home</title>
+	<meta charset="utf-8" />
+	<!--Bootstrap-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="/static/fullcalendar/fullcalendar.css"/>
+	<link rel="stylesheet" href="/static/fullcalendar/fullcalendar.print.css" media="print"/>
+	<!--Custom stylesheet-->
+	<link rel="stylesheet" href="/static/calendarApp/resize.css" />
+	<link rel="stylesheet" href="/static/calendarApp/stylesheet.css" />
+</head>
+
+<!--Header-->
+<div id="header">
+	<div class="top">
+		<div id="info">
+			<h1 style="font-size: 30px; padding-top: 15px; padding-right: 15px; color: white;">
+				{% if not user.is_authenticated %}
+				You are not logged in.
+				{% else %}{{ user.username }}
+				{% endif %}</h1>
+		</div>
+		<br>
+<!-- Navigation for regular screen sizes -->
+		<nav id="nav">
+			<ul>
+				<li><a href="{% url 'calendarApp:calendar' %}">Calendars</a></li>
+				<li><a href="{% url 'calendarApp:new_event' %}">Add Event</a></li>
+			  <li><a href="{% url 'two_factor:profile' %}"> Account Security</a></li>
+				<li><a href="{% url 'calendarApp:logout' %}">Log out</a></li>
+			</ul>
+		</nav>
+
+	</div>
+</div>
+
+<!--Navigation for smaller screens-->
+<div id="navModal">
+	<!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#navMenu">
+		Nav
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="navMenu" tabindex="-1" role="dialog" aria-labelledby="navModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="navModalLabel">Menu</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<ul>
+						<li><a href="{% url 'calendarApp:calendar' %}">Calendars</a></li>
+						<li><a href="{% url 'calendarApp:message' %}">Messages</a></li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<body class="is-preload">
+
+	<div class="container" style="padding-left: 10%">
+
+		{% block content %}{% endblock %}
+
+	</div>
+
+	<!-- Scripts -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+	<script src="/static/fullcalendar/fullcalendar.min.js"></script>
+	<script>
+
+$(document).ready(function() {
+
+	$('#calendar').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'listDay,listWeek,month'
+		},
+
+		// customize the button names,
+		// otherwise they'd all just say "list"
+		views: {
+			listDay: { buttonText: 'list day' },
+			listWeek: { buttonText: 'list week' }
+		},
+
+		defaultView: 'month',
+		navLinks: true, // can click day/week names to navigate views
+		editable: true,
+		eventLimit: true, // allow "more" link when too many events
+		events: [
+							 {% for i in events %}
+							 {
+									 title: "{{ i.title}}",
+									 start: '{{ i.start|date:"Y-m-d" }}',
+									 end: '{{ i.end|date:"Y-m-d" }}',
+									 url: '/event?eventId={{i.id}}',
+									 backgroundColor: '#eeeeee',
+									 textColor: '#000000'
+
+							 },
+							 {% endfor %}
+
+					 ]
+
+});
+});
+
+</script>
+
+</body>
+
+</html>
